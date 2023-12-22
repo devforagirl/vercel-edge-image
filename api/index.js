@@ -28,21 +28,27 @@ const OUTPUT_FORMATS = {
 
 const multipleImageMode = ['watermark', 'blend'];
 
-// original
-const inWhiteList = (env, url) => {
-	const imageUrl = new URL(url);
-	// const whiteList = env.WHITE_LIST ? env.WHITE_LIST.split(',') : [];
-	console.log(env);
-	const whiteList = ['deadline.com'];
-	return !(whiteList.length && !whiteList.find((hostname) => imageUrl.hostname.endsWith(hostname)));
-};
+// // original
+// const inWhiteList = (env, url) => {
+// 	const imageUrl = new URL(url);
+// 	const whiteList = env.WHITE_LIST ? env.WHITE_LIST.split(',') : [];
+// 	return !(whiteList.length && !whiteList.find((hostname) => imageUrl.hostname.endsWith(hostname)));
+// };
 
-// // updated
+// // updated 1
 // const inWhiteList = (url) => {
 // 	const whiteList = process.env.ALLOW_URL ? process.env.ALLOW_URL.split(',') : [];
 // 	const imageUrl = new URL(url);
 // 	return !(whiteList.length && !whiteList.find((hostname) => imageUrl.hostname.endsWith(hostname)));
 // };
+
+// // updated 2
+const inWhiteList = (env, url) => {
+	const imageUrl = new URL(url);
+	console.log(env);
+	const whiteList = ['vercel.app'];
+	return !(whiteList.length && !whiteList.find((hostname) => imageUrl.hostname.endsWith(hostname)));
+};
 
 const processImage = async (env, request, inputImage, pipeAction) => {
 	const [action, options = ''] = pipeAction.split('!');
