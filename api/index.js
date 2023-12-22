@@ -17,7 +17,7 @@ async function initWasm() {
 	photon.setWasm(photonInstance.exports); // need patch
 }
 
-initWasm()
+initWasm();
 
 const OUTPUT_FORMATS = {
 	jpeg: 'image/jpeg',
@@ -28,9 +28,17 @@ const OUTPUT_FORMATS = {
 
 const multipleImageMode = ['watermark', 'blend'];
 
-const inWhiteList = (env, url) => {
+// original
+// const inWhiteList = (env, url) => {
+// 	const imageUrl = new URL(url);
+// 	const whiteList = env.WHITE_LIST ? env.WHITE_LIST.split(',') : [];
+// 	return !(whiteList.length && !whiteList.find((hostname) => imageUrl.hostname.endsWith(hostname)));
+// };
+
+// updated
+const inWhiteList = (url) => {
+	const whiteList = process.env.ALLOW_URL ? process.env.ALLOW_URL.split(',') : [];
 	const imageUrl = new URL(url);
-	const whiteList = env.WHITE_LIST ? env.WHITE_LIST.split(',') : [];
 	return !(whiteList.length && !whiteList.find((hostname) => imageUrl.hostname.endsWith(hostname)));
 };
 
@@ -53,9 +61,8 @@ const processImage = async (env, request, inputImage, pipeAction) => {
 	}
 };
 
-
 export default async function handler(request) {
-	const env = process.env
+	const env = process.env;
 
 	// 入参提取与校验
 	const query = queryString.parse(new URL(request.url).search);
@@ -80,7 +87,7 @@ export default async function handler(request) {
 	}
 
 	// 目标图片获取与检查
-	request.headers.delete('host')
+	request.headers.delete('host');
 	const imageRes = await fetch(url, { headers: request.headers });
 	if (!imageRes.ok) {
 		return imageRes;
@@ -105,14 +112,14 @@ export default async function handler(request) {
 		// 图片编码
 		let outputImageData;
 		if (format === 'jpeg' || format === 'jpg') {
-			outputImageData = outputImage.get_bytes_jpeg(quality)
+			outputImageData = outputImage.get_bytes_jpeg(quality);
 		} else if (format === 'png') {
-			outputImageData = outputImage.get_bytes()
+			outputImageData = outputImage.get_bytes();
 		} else {
 			outputImageData = await optimizeImage({
 				image: outputImage.get_bytes(),
-				quality
-			})
+				quality,
+			});
 		}
 		console.log('create outputImageData done');
 
