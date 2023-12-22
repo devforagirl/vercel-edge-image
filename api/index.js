@@ -31,7 +31,9 @@ const multipleImageMode = ['watermark', 'blend'];
 // original
 const inWhiteList = (env, url) => {
 	const imageUrl = new URL(url);
-	const whiteList = env.WHITE_LIST ? env.WHITE_LIST.split(',') : [];
+	// const whiteList = env.WHITE_LIST ? env.WHITE_LIST.split(',') : [];
+	console.log(env);
+	const whiteList = ['deadline.com'];
 	return !(whiteList.length && !whiteList.find((hostname) => imageUrl.hostname.endsWith(hostname)));
 };
 
