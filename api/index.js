@@ -46,7 +46,8 @@ const multipleImageMode = ['watermark', 'blend'];
 const inWhiteList = (env, url) => {
 	const imageUrl = new URL(url);
 	console.log(env);
-	const whiteList = ['vercel.app'];
+	// const whiteList = ['vercel.app'];
+	const whiteList = ['loli.net'];
 	return !(whiteList.length && !whiteList.find((hostname) => imageUrl.hostname.endsWith(hostname)));
 };
 
